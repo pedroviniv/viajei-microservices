@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ifpb.pos.soap.viajei.microservice.clients.api.response;
+package br.edu.ifpb.pos.soap.viajei.microservice.hotels.api.response;
 
-import br.edu.ifpb.pos.soap.viajei.microservice.clients.infra.EntityConflictException;
+import br.edu.ifpb.pos.soap.viajei.microservice.hotels.infra.exceptions.EntityConflictException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
