@@ -39,23 +39,19 @@ public class Room implements Serializable {
             targetClass = Attribute.class, 
             fetch = FetchType.EAGER)
     private List<Attribute> attributes;
-
-    private boolean occupied;
     
     @Column(precision = 11, scale = 2)
     private BigDecimal daily;
 
-    public Room(String roomId, String title, BigDecimal daily, boolean occupied) {
+    public Room(String roomId, String title, BigDecimal daily) {
         this.roomId = roomId;
         this.title = title;
         this.daily = daily;
-        this.occupied = occupied;
         this.attributes = new ArrayList<>();
     }
     
     public Room() {
         this.attributes = new ArrayList<>();
-        this.occupied = false;
     }
 
     public String getRoomId() {
@@ -98,14 +94,6 @@ public class Room implements Serializable {
         this.attributes = attributes;
     }
 
-    public boolean isOccupied() {
-        return occupied;
-    }
-
-    public void setOccupied(boolean occupied) {
-        this.occupied = occupied;
-    }
-
     public Long getId() {
         return id;
     }
@@ -116,6 +104,6 @@ public class Room implements Serializable {
 
     @Override
     public String toString() {
-        return "Room{" + "id=" + id + ", roomId=" + roomId + ", title=" + title + ", attributes=" + attributes + ", occupied=" + occupied + '}';
+        return "Room{" + "id=" + id + ", roomId=" + roomId + ", title=" + title + ", attributes=" + attributes + ", daily=" + daily + '}';
     }
 }
