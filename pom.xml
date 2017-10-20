@@ -9,6 +9,7 @@
     <module>viajei-microservice-clients</module>
     <module>viajei-microservice-hotels</module>
     <module>viajei-microservice-transport-ticket</module>
+    <module>viajei-microservice-agency</module>
   </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
