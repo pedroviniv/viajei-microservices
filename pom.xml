@@ -8,8 +8,8 @@
     <modules>
     <module>viajei-microservice-clients</module>
     <module>viajei-microservice-hotels</module>
-    <module>viajei-microservice-transport-ticket</module>
-  </modules>
+        <module>viajei-microservice-transports</module>
+    </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
