@@ -1,0 +1,21 @@
+version: "2"
+services: 
+  transports-db:
+    container_name: viajei-microservice-transports-db
+    build: ./database/
+    image: viajei-microservice-transports-postgres
+    ports:
+      - 5435:5432
+    volumes:
+      - transports-postgres-volume-db:/var/lib/postgresql/data/
+  transports-api: 
+    container_name: viajei-microservice-transports-api
+    build: .
+    image: viajei-microservice-transports-payara
+    ports:
+      - 8083:8080
+    links:
+      - transports-db:transports-db
+volumes:
+  transports-postgres-volume-db:
+    driver: local
