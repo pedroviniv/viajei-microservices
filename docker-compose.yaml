@@ -1,0 +1,84 @@
+version: "2"
+services:
+  clients-db:
+    container_name: viajei-microservice-clients-db
+    build: ./viajei-microservice-clients/database/
+    image: viajei-microservice-clients-postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - clients-postgres-volume-db:/var/lib/postgresql/data/
+  clients-api: 
+    container_name: viajei-microservice-clients-api
+    build: ./viajei-microservice-clients/
+    image: viajei-microservice-clients-payara
+    ports:
+      - "8081:8080"
+    links:
+      - "clients-db:clients-db"
+
+  hotels-db:
+    container_name: viajei-microservice-hotels-db
+    build: ./viajei-microservice-hotels/database/
+    image: viajei-microservice-hotels-postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - hotels-postgres-volume-db:/var/lib/postgresql/data/
+  hotels-api: 
+    container_name: viajei-microservice-hotels-api
+    build: ./viajei-microservice-hotels/
+    image: viajei-microservice-hotels-payara
+    ports:
+      - "8082:8080"
+    links:
+      - "hotels-db:hotels-db"
+      - "clients-api:clients-api"
+
+  transports-db:
+    container_name: viajei-microservice-transports-db
+    build: ./viajei-microservice-transports/database/
+    image: viajei-microservice-transports-postgres
+    ports:
+      - "5435:5432"
+    volumes:
+      - transports-postgres-volume-db:/var/lib/postgresql/data/
+  transports-api: 
+    container_name: viajei-microservice-transports-api
+    build: ./viajei-microservice-transports/
+    image: viajei-microservice-transports-payara
+    ports:
+      - "8083:8080"
+    links:
+      - "transports-db:transports-db"
+      - "clients-api:clients-api"
+
+  agency-db:
+    container_name: viajei-microservice-agency-db
+    build: ./viajei-microservice-agency/database/
+    image: viajei-microservice-agency-postgres
+    ports:
+      - "5436:5432"
+    volumes:
+      - agency-postgres-volume-db:/var/lib/postgresql/data/
+  agency-api: 
+    container_name: viajei-microservice-agency-api
+    build: ./viajei-microservice-agency/
+    image: viajei-microservice-agency-payara
+    ports:
+      - "8084:8080"
+    links:
+      - "agency-db:agency-db"
+      - "clients-api:clients-api"
+      - "hotels-api:hotels-api"
+      - "transports-api:transports-api"
+
+volumes:
+  clients-postgres-volume-db:
+    driver: local
+  hotels-postgres-volume-db:
+    driver: local
+  transports-postgres-volume-db:
+    driver: local
+  agency-postgres-volume-db:
+    driver: local

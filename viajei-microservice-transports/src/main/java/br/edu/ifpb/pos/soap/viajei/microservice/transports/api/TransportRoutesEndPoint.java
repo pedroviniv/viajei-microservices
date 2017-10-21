@@ -13,8 +13,10 @@ import java.net.URI;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -52,6 +54,24 @@ public class TransportRoutesEndPoint {
                 .build();
         
         return Response.created(routeURI).build();
+    }
+    
+    @DELETE
+    @Path("{routeId}")
+    public Response removeRoute(
+            @DefaultValue("-1") 
+            @PathParam("transportId") Long transportId,
+            @DefaultValue("-1")
+            @PathParam("routeId") Long routeId) {
+        
+        Transport transportFound = this.transports
+                .findById(transportId);
+        
+        transportFound.removeRoute(routeId);
+        
+        this.transports.update(transportFound);
+        
+        return Response.ok().build();
     }
 
 }

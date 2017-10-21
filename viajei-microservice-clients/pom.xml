@@ -21,6 +21,11 @@
     
     <dependencies>
         <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4.1212.jre7</version>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
@@ -29,6 +34,7 @@
     </dependencies>
 
     <build>
+        <finalName>viajei-microservice-clients</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

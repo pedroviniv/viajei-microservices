@@ -5,9 +5,11 @@
  */
 package br.edu.ifpb.pos.soap.viajei.microservice.transports.api;
 
+import br.edu.ifpb.pos.soap.viajei.microservice.transports.api.resources.TicketRequestResource;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.infra.Repository;
-import br.edu.ifpb.pos.soap.viajei.microservice.transports.infra.TransportsJPA;
-import br.edu.ifpb.pos.soap.viajei.microservice.transports.model.Transport;
+import br.edu.ifpb.pos.soap.viajei.microservice.transports.infra.TicketJPA;
+import br.edu.ifpb.pos.soap.viajei.microservice.transports.model.Ticket;
+import br.edu.ifpb.pos.soap.viajei.microservice.transports.services.TicketService;
 import java.net.URI;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
@@ -29,84 +31,75 @@ import javax.ws.rs.core.UriInfo;
 
 /**
  *
- * @author pafer
+ * @author kieckegard
  */
 
-@Path("transports")
+@Path("tickets")
 @RequestScoped
-public class TransportsEndPoint {
-    
+public class TicketsEndPoint {
     
     @Inject
-    @TransportsJPA
-    private Repository<Transport, Long> transports;
+    @TicketJPA
+    private Repository<Ticket, Long> tickets;
     @Inject
-    private TransportRoutesEndPoint transportRoutesEndPoint;
+    private TicketService ticketService;
     
     @GET
-    @Path("{transportId}")
+    @Path("{ticketId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findById(
             @DefaultValue("-1") 
-            @PathParam("transportId") 
-                    Long transportId) {
+            @PathParam("{ticketId}") 
+                    Long ticketId) {
         
-        Transport found = this.transports.findById(transportId);
+        Ticket ticketFound = this.tickets.findById(ticketId);
         
-        return Response.ok(found).build();
+        return Response.ok(ticketFound).build();
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response listAll() {
         
-        List<Transport> transportList = this.transports.listAll();
-        
-        GenericEntity<List<Transport>> entity = 
-                new GenericEntity<List<Transport>>(transportList){};
+        GenericEntity<List<Ticket>> entity = 
+                new GenericEntity<List<Ticket>>(this.tickets.listAll()){};
         
         return Response.ok(entity).build();
     }
     
-    
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response add(Transport transport, @Context UriInfo uriInfo) {
+    public Response add(TicketRequestResource req, @Context UriInfo uriInfo) {
         
-        this.transports.persist(transport);
+        Long ticketId = this.ticketService.add(req.getTransport_id(), 
+                req.getRoute_id(), req.getClient_cpf(), 
+                req.getSeat_number());
         
         URI createdUri = uriInfo.getBaseUriBuilder()
                 .path(this.getClass())
-                .path(String.valueOf(transport.getId()))
+                .path(String.valueOf(ticketId))
                 .build();
         
         return Response.created(createdUri).build();
     }
     
     @DELETE
-    @Path("{transportId}")
+    @Path("{ticketId}")
     public Response remove(
             @DefaultValue("-1") 
-            @PathParam("transportId") 
-                    Long transportId) {
+            @PathParam("{ticketId}") 
+                    Long ticketId) {
         
-        this.transports.remove(transportId);
+        this.tickets.remove(ticketId);
         
         return Response.ok().build();
     }
     
     @PUT
-    public Response update(Transport updatedTransport) {
+    public Response update(Ticket ticket) {
         
-        this.transports.update(updatedTransport);
+        this.tickets.update(ticket);
         
         return Response.ok().build();
     }
-    
-    
-    @Path("{transportId}/routes")
-    public TransportRoutesEndPoint transportRoutes() {
-        return transportRoutesEndPoint;
-    }
-    
 }
