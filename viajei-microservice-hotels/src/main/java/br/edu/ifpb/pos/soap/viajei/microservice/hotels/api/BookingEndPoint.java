@@ -6,11 +6,15 @@
 package br.edu.ifpb.pos.soap.viajei.microservice.hotels.api;
 
 import br.edu.ifpb.pos.soap.viajei.microservice.hotels.api.converter.BookingConverter;
+import br.edu.ifpb.pos.soap.viajei.microservice.hotels.api.resources.BookingRequestResource;
 import br.edu.ifpb.pos.soap.viajei.microservice.hotels.api.resources.BookingResource;
+import br.edu.ifpb.pos.soap.viajei.microservice.hotels.consumers.ClientConsumer;
 import br.edu.ifpb.pos.soap.viajei.microservice.hotels.infra.Bookings;
+import br.edu.ifpb.pos.soap.viajei.microservice.hotels.infra.exceptions.EntityNotFoundException;
 import br.edu.ifpb.pos.soap.viajei.microservice.hotels.model.Booking;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -39,6 +43,15 @@ public class BookingEndPoint {
     
     @Inject private Bookings bookings;
     @Inject private BookingConverter bookingConverter;
+    @Inject private ClientConsumer clientConsumer;
+    
+    public static URI getUri(UriInfo uriInfo, Long bookingId) {
+        
+        return uriInfo.getBaseUriBuilder()
+                .path(BookingEndPoint.class)
+                .path(String.valueOf(bookingId))
+                .build();
+    }
     
     @GET
     @Path("{bookingId}")
@@ -46,28 +59,41 @@ public class BookingEndPoint {
     public Response findById(
             @DefaultValue("-1") 
             @PathParam("bookingId") 
-                    Long bookingId) {
+                    Long bookingId,
+            @Context UriInfo uriInfo) {
         
         Booking booking = this.bookings.findById(bookingId);
         
-        return Response.ok(booking).build();
+        BookingResource bookingResource = BookingResource.of(booking, uriInfo);
+        
+        return Response.ok(bookingResource).build();
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listAll() {
+    public Response listAll(@Context UriInfo uriInfo) {
         
-        List<Booking> bookingsList = bookings.listAll();
+        List<Booking> bookingList = this.bookings.listAll();
         
-        GenericEntity<List<Booking>> entity = new
-            GenericEntity<List<Booking>>(bookingsList){};
+        List<BookingResource> bookingResourceList = bookingList.stream()
+                .map(b -> BookingResource.of(b, uriInfo))
+                .collect(Collectors.toList());
+        
+        GenericEntity<List<BookingResource>> entity = new
+            GenericEntity<List<BookingResource>>(bookingResourceList){};
         
         return Response.ok(entity).build();
     }
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response add(BookingResource bookingResource, @Context UriInfo uriInfo) {
+    public Response add(BookingRequestResource bookingResource, @Context UriInfo uriInfo) {
+        
+        String clientCpf = bookingResource.getClient_cpf();
+        
+        if(!clientConsumer.exists(clientCpf))
+            throw new EntityNotFoundException("There's no client with cpf "
+                    + clientCpf);
         
         Booking booking = this.bookingConverter
                 .convert(bookingResource);
@@ -96,7 +122,7 @@ public class BookingEndPoint {
     
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(BookingResource bookingResource) {
+    public Response update(BookingRequestResource bookingResource) {
         
         Booking booking = this.bookingConverter.convert(bookingResource);
         this.bookings.update(booking);

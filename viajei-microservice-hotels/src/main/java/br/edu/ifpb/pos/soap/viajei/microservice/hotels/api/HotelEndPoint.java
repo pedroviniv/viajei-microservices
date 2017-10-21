@@ -40,6 +40,14 @@ public class HotelEndPoint {
     @Inject private Hotels hotels;
     @Inject private HotelRoomEndPoint hotelRoomEndPoint;
     
+    public static URI getUri(UriInfo uriInfo, Long hotelId) {
+        
+        return uriInfo.getBaseUriBuilder()
+                .path(HotelEndPoint.class)
+                .path(String.valueOf(hotelId))
+                .build();
+    }
+    
     @GET
     @Path("{hotelId}")
     @Produces(MediaType.APPLICATION_JSON)

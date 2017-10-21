@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
@@ -19,8 +20,9 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Period implements Serializable {
     
-    
+    @Column(name = "start_date_time")
     private LocalDateTime start;
+    @Column(name = "end_date_time")
     private LocalDateTime end;
 
     public Period(LocalDateTime start, LocalDateTime end) {

@@ -11,7 +11,7 @@ package br.edu.ifpb.pos.soap.viajei.microservice.agency.api.converters;
  */
 public enum ExternalEntityType {
     
-    CLIENT("http://clients-api:8080/viajei-microservice-client/api/clients"),
+    CLIENT("http://clients-api:8080/viajei-microservice-clients/api/clients"),
     HOTEL("http://hotels-api:8080//viajei-microservice-hotels/api/hotels"),
     ROOM("http://hotels-api:8080//viajei-microservice-hotels/api/rooms"),
     BOOKING("http://hotels-api:8080//viajei-microservice-hotels/api/bookings"),

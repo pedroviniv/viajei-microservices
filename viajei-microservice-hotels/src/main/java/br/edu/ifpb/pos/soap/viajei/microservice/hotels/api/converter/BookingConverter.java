@@ -5,6 +5,7 @@
  */
 package br.edu.ifpb.pos.soap.viajei.microservice.hotels.api.converter;
 
+import br.edu.ifpb.pos.soap.viajei.microservice.hotels.api.resources.BookingRequestResource;
 import br.edu.ifpb.pos.soap.viajei.microservice.hotels.api.resources.BookingResource;
 import br.edu.ifpb.pos.soap.viajei.microservice.hotels.infra.Hotels;
 import br.edu.ifpb.pos.soap.viajei.microservice.hotels.infra.Rooms;
@@ -18,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.core.UriInfo;
 
 /**
  *
@@ -33,7 +35,7 @@ public class BookingConverter {
     private final DateTimeFormatter dtf = DateTimeFormatter
             .ofPattern("dd/MM/yyyy HH:mm");
     
-    public Booking convert(BookingResource resource) {
+    public Booking convert(BookingRequestResource resource) {
         
         Hotel hotel = hotels.findById(resource.getHotel_id());
         Room room = rooms.find(resource.getRoom_id());

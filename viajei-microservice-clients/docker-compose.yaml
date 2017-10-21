@@ -1,0 +1,21 @@
+version: "2"
+services: 
+  clients-db:
+    container_name: viajei-microservice-clients-db
+    build: ./database/
+    image: viajei-microservice-clients-postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - clients-postgres-volume-db:/var/lib/postgresql/data/
+  clients-api: 
+    container_name: viajei-microservice-clients-api
+    build: .
+    image: viajei-microservice-clients-payara
+    ports:
+      - "8081:8080"
+    links:
+      - "clients-db:clients-db"
+volumes:
+  clients-postgres-volume-db:
+    driver: local

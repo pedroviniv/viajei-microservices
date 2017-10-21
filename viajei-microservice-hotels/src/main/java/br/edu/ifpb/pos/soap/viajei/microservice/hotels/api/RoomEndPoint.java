@@ -8,6 +8,7 @@ package br.edu.ifpb.pos.soap.viajei.microservice.hotels.api;
 import br.edu.ifpb.pos.soap.viajei.microservice.hotels.infra.Rooms;
 import br.edu.ifpb.pos.soap.viajei.microservice.hotels.model.Room;
 import java.io.Serializable;
+import java.net.URI;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -20,6 +21,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 /**
  *
@@ -31,6 +33,14 @@ import javax.ws.rs.core.Response;
 public class RoomEndPoint implements Serializable {
     
     @Inject private Rooms rooms;
+    
+    public static URI getUri(UriInfo uriInfo, Long roomId) {
+        
+        return uriInfo.getBaseUriBuilder()
+                .path(RoomEndPoint.class)
+                .path(String.valueOf(roomId))
+                .build();
+    }
     
     @GET
     @Path("{roomId}")

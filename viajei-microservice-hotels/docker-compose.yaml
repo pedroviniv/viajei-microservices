@@ -1,0 +1,21 @@
+version: "2"
+services: 
+  hotels-db:
+    container_name: viajei-microservice-hotels-db
+    build: ./database/
+    image: viajei-microservice-hotels-postgres
+    ports:
+      - 5434:5432
+    volumes:
+      - hotels-postgres-volume-db:/var/lib/postgresql/data/
+  hotels-api: 
+    container_name: viajei-microservice-hotels-api
+    build: .
+    image: viajei-microservice-hotels-payara
+    ports:
+      - 8082:8080
+    links:
+      - hotels-db:hotels-db
+volumes:
+  hotels-postgres-volume-db:
+    driver: local
