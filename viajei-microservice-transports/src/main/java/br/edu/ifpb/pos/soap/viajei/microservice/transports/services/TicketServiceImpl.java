@@ -5,7 +5,7 @@
  */
 package br.edu.ifpb.pos.soap.viajei.microservice.transports.services;
 
-import br.edu.ifpb.pos.soap.viajei.microservice.consumers.ClientConsumer;
+import br.edu.ifpb.pos.soap.viajei.microservice.transports.consumers.ClientConsumer;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.infra.EntityNotFoundException;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.infra.Repository;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.infra.RoutesJPA;
@@ -56,9 +56,10 @@ public class TicketServiceImpl implements TicketService {
     public Long add(Long transportId, Long routeId, 
             String clientCpf, Integer seatNumber) {
         
+        /*
         if(!clientConsumer.exists(clientCpf))
             throw new EntityNotFoundException("There's no client with cpf "
-                    + clientCpf);
+                    + clientCpf);*/
         
         Transport transportFound = this.transports.findById(transportId);
         Route routeFound = this.routes.findById(routeId);

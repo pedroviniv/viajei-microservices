@@ -5,11 +5,14 @@
  */
 package br.edu.ifpb.pos.soap.viajei.microservice.transports.api;
 
+import br.edu.ifpb.pos.soap.viajei.microservice.transports.api.converters.TransportConverter;
+import br.edu.ifpb.pos.soap.viajei.microservice.transports.api.resources.TransportResponseResource;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.infra.Repository;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.infra.TransportsJPA;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.model.Transport;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -40,8 +43,17 @@ public class TransportsEndPoint {
     @Inject
     @TransportsJPA
     private Repository<Transport, Long> transports;
-    @Inject
-    private TransportRoutesEndPoint transportRoutesEndPoint;
+    
+    @Inject private TransportRoutesEndPoint transportRoutesEndPoint;
+    @Inject private TransportConverter transportConverter;
+    
+    public static URI getURI(UriInfo uriInfo, Long transportId) {
+        return uriInfo
+                .getBaseUriBuilder()
+                .path(TransportsEndPoint.class)
+                .path(String.valueOf(transportId))
+                .build();
+    }
     
     @GET
     @Path("{transportId}")
@@ -49,21 +61,29 @@ public class TransportsEndPoint {
     public Response findById(
             @DefaultValue("-1") 
             @PathParam("transportId") 
-                    Long transportId) {
+                    Long transportId,
+            @Context UriInfo uriInfo) {
         
         Transport found = this.transports.findById(transportId);
+        TransportResponseResource transportResource = transportConverter
+                .convert(found, uriInfo);
         
-        return Response.ok(found).build();
+        return Response.ok(transportResource).build();
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listAll() {
+    public Response listAll(@Context UriInfo uriInfo) {
         
         List<Transport> transportList = this.transports.listAll();
+        List<TransportResponseResource> transportResourceList = transportList
+                .stream()
+                .map(t -> transportConverter.convert(t, uriInfo))
+                .collect(Collectors.toList());
         
-        GenericEntity<List<Transport>> entity = 
-                new GenericEntity<List<Transport>>(transportList){};
+        GenericEntity<List<TransportResponseResource>> entity = 
+                new GenericEntity<List<TransportResponseResource>>
+                    (transportResourceList){};
         
         return Response.ok(entity).build();
     }

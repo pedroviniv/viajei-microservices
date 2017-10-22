@@ -5,6 +5,8 @@
  */
 package br.edu.ifpb.pos.soap.viajei.microservice.transports.api;
 
+import br.edu.ifpb.pos.soap.viajei.microservice.transports.api.converters.RouteConverter;
+import br.edu.ifpb.pos.soap.viajei.microservice.transports.api.resources.RouteRequestResource;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.infra.Repository;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.infra.TransportsJPA;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.model.Route;
@@ -35,15 +37,18 @@ public class TransportRoutesEndPoint {
     @TransportsJPA
     private Repository<Transport, Long> transports;
     
+    @Inject private RouteConverter routeConverter; 
+    
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addRoute(
             @DefaultValue("-1") 
             @PathParam("transportId") Long transportId,
-            Route route,
+            RouteRequestResource routeReq,
             @Context UriInfo uriInfo) {
         
         Transport transportFound = this.transports.findById(transportId);
+        Route route = routeConverter.convert(routeReq);
         transportFound.addRoute(route);
         
         this.transports.update(transportFound);

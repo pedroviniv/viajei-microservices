@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 
@@ -30,6 +31,7 @@ public class Ticket implements Serializable {
     private Long id;
     
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "transport_id")
     private Transport transport;
     
     @Embedded
@@ -41,6 +43,7 @@ public class Ticket implements Serializable {
     private BigDecimal price;
     
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "route_id")
     private Route route;
 
     public Ticket(Transport transport, Client client, Integer seatNumber, Route route) {
@@ -53,7 +56,7 @@ public class Ticket implements Serializable {
     
     private BigDecimal calculatePrice() {
         return this.transport.getBasePrice()
-                .multiply(route.getKmPrice());
+                .add(route.getKmPrice());
     }
 
     public Ticket() {

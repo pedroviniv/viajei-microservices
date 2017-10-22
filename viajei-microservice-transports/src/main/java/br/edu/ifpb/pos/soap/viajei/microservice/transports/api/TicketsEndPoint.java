@@ -5,13 +5,16 @@
  */
 package br.edu.ifpb.pos.soap.viajei.microservice.transports.api;
 
+import br.edu.ifpb.pos.soap.viajei.microservice.transports.api.converters.TicketConverter;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.api.resources.TicketRequestResource;
+import br.edu.ifpb.pos.soap.viajei.microservice.transports.api.resources.TicketResponseResource;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.infra.Repository;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.infra.TicketJPA;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.model.Ticket;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.services.TicketService;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -41,28 +44,40 @@ public class TicketsEndPoint {
     @Inject
     @TicketJPA
     private Repository<Ticket, Long> tickets;
-    @Inject
-    private TicketService ticketService;
+    
+    @Inject private TicketService ticketService;
+    @Inject private TicketConverter ticketConverter;
     
     @GET
     @Path("{ticketId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findById(
             @DefaultValue("-1") 
-            @PathParam("{ticketId}") 
-                    Long ticketId) {
+            @PathParam("ticketId") 
+                    Long ticketId,
+            @Context UriInfo uriInfo) {
         
         Ticket ticketFound = this.tickets.findById(ticketId);
         
-        return Response.ok(ticketFound).build();
+        return Response
+                .ok(ticketConverter.convert(ticketFound, uriInfo))
+                .build();
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listAll() {
+    public Response listAll(@Context UriInfo uriInfo) {
         
-        GenericEntity<List<Ticket>> entity = 
-                new GenericEntity<List<Ticket>>(this.tickets.listAll()){};
+        List<Ticket> ticketList = this.tickets.listAll();
+        
+        List<TicketResponseResource> ticketResourceList = ticketList
+                .stream()
+                .map(t -> ticketConverter.convert(t, uriInfo))
+                .collect(Collectors.toList());
+        
+        GenericEntity<List<TicketResponseResource>> entity = 
+                new GenericEntity<List<TicketResponseResource>>
+                    (ticketResourceList){};
         
         return Response.ok(entity).build();
     }
@@ -87,7 +102,7 @@ public class TicketsEndPoint {
     @Path("{ticketId}")
     public Response remove(
             @DefaultValue("-1") 
-            @PathParam("{ticketId}") 
+            @PathParam("ticketId") 
                     Long ticketId) {
         
         this.tickets.remove(ticketId);

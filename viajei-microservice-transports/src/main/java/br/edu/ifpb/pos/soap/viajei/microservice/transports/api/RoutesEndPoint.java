@@ -8,6 +8,7 @@ package br.edu.ifpb.pos.soap.viajei.microservice.transports.api;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.infra.Repository;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.infra.RoutesJPA;
 import br.edu.ifpb.pos.soap.viajei.microservice.transports.model.Route;
+import java.net.URI;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
@@ -17,6 +18,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 /**
  *
@@ -30,6 +32,13 @@ public class RoutesEndPoint {
     @Inject
     @RoutesJPA
     private Repository<Route, Long> routes;
+    
+    public static URI getURI(UriInfo uriInfo, Long roomId) {
+        return uriInfo.getBaseUriBuilder()
+                .path(RoutesEndPoint.class)
+                .path(String.valueOf(roomId))
+                .build();
+    }
     
     @GET
     @Path("{routeId}")

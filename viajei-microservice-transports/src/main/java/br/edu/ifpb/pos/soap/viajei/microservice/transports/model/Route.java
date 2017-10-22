@@ -25,16 +25,18 @@ public class Route implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    private String from;
-    private String to;
+    @Column(name = "from_address")
+    private String fromAddress;
+    @Column(name = "destination_address")
+    private String destinationAddress;
     @Column(name = "km_distance")
     private Integer kmDistance;
     @Embedded
     private Horary horary;
 
     public Route(String from, String to, Integer kmDistance, Horary horary) {
-        this.from = from;
-        this.to = to;
+        this.fromAddress = from;
+        this.destinationAddress = to;
         this.kmDistance = kmDistance;
         this.horary = horary;
     }
@@ -50,20 +52,20 @@ public class Route implements Serializable {
         this.id = id;
     }
 
-    public String getFrom() {
-        return from;
+    public String getFromAddress() {
+        return fromAddress;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setFromAddress(String fromAddress) {
+        this.fromAddress = fromAddress;
     }
 
-    public String getTo() {
-        return to;
+    public String getDestinationAddress() {
+        return destinationAddress;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setDestinationAddress(String destinationAddress) {
+        this.destinationAddress = destinationAddress;
     }
 
     public Integer getKmDistance() {
@@ -83,11 +85,11 @@ public class Route implements Serializable {
     }
     
     public BigDecimal getKmPrice() {
-        return new BigDecimal(this.kmDistance * 5.80);
+        return new BigDecimal(this.kmDistance * 0.10);
     }
 
     @Override
     public String toString() {
-        return "Route{" + "id=" + id + ", from=" + from + ", to=" + to + ", kmDistance=" + kmDistance + ", horary=" + horary + '}';
+        return "Route{" + "id=" + id + ", from=" + fromAddress + ", to=" + destinationAddress + ", kmDistance=" + kmDistance + ", horary=" + horary + '}';
     }
 }

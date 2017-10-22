@@ -41,7 +41,7 @@ public class JPARepository<T,E> implements Repository<T,E> {
             this.manager.persist(obj);
         } catch (EntityExistsException ex) {
             throw new EntityConflictException("There's already a "
-                    + entityClass.getSimpleName() + " instance with the specified id ");
+                    + entityClass.getCanonicalName() + " instance with the specified id ");
         }
     }
 
@@ -51,7 +51,7 @@ public class JPARepository<T,E> implements Repository<T,E> {
             this.manager.merge(obj);
         } catch (IllegalArgumentException ex) {
             throw new EntityNotFoundException("There's no "
-                    + entityClass.getSimpleName()
+                    + entityClass.getCanonicalName()
                     + " with the specified id!");
         }
     }
@@ -80,7 +80,7 @@ public class JPARepository<T,E> implements Repository<T,E> {
     @Override
     public List<T> listAll() {
         String jpql = String.format("SELECT e FROM %s e", 
-                        entityClass.getSimpleName());
+                        entityClass.getCanonicalName());
         
         LOG.log(Level.INFO, "QUERY: {0}", jpql);
         
