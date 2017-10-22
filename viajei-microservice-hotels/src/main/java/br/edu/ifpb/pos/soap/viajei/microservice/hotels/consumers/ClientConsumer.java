@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response;
 @RequestScoped
 public class ClientConsumer {
     
-    public static final String CLIENT_RES = "http://clients-api/viajei-microservices-clients/api/clients/";
+    public static final String CLIENT_RES = "http://clients-api:8080/viajei-microservice-clients/api/clients/";
     private Client client = ClientBuilder.newClient();
     private WebTarget target = client.target(CLIENT_RES);
     
