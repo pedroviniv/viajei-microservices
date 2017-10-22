@@ -1,3 +1,9 @@
 /viajei-microservice-hotels/target/
 /viajei-microservice-transports/target/
 /viajei-microservice-agency/target/
+agency-down.sh
+agency-up.sh
+hotels-down.sh
+hotels-up.sh
+transports-down.sh
+transports-up.sh

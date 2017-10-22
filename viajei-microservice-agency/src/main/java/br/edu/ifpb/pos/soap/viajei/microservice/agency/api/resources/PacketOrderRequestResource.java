@@ -14,14 +14,14 @@ import java.io.Serializable;
 public class PacketOrderRequestResource implements Serializable {
     
     private Long packet_id;
-    private String client_cpf;
+    private String client_id;
     private Integer seat_number;
     private String start_date;
     private String end_date;
 
-    public PacketOrderRequestResource(Long packet_id, String client_cpf, Integer seat_number, String start_date, String end_date) {
+    public PacketOrderRequestResource(Long packet_id, String client_id, Integer seat_number, String start_date, String end_date) {
         this.packet_id = packet_id;
-        this.client_cpf = client_cpf;
+        this.client_id = client_id;
         this.seat_number = seat_number;
         this.start_date = start_date;
         this.end_date = end_date;
@@ -38,12 +38,12 @@ public class PacketOrderRequestResource implements Serializable {
         this.packet_id = packet_id;
     }
 
-    public String getClient_cpf() {
-        return client_cpf;
+    public String getClient_id() {
+        return client_id;
     }
 
-    public void setClient_cpf(String client_cpf) {
-        this.client_cpf = client_cpf;
+    public void setClient_id(String client_id) {
+        this.client_id = client_id;
     }
 
     public Integer getSeat_number() {
@@ -72,6 +72,6 @@ public class PacketOrderRequestResource implements Serializable {
 
     @Override
     public String toString() {
-        return "PacketOrderRequestResource{" + "packet_id=" + packet_id + ", client_cpf=" + client_cpf + ", seat_number=" + seat_number + ", start_date=" + start_date + ", end_date=" + end_date + '}';
+        return "PacketOrderRequestResource{" + "packet_id=" + packet_id + ", client_id=" + client_id + ", seat_number=" + seat_number + ", start_date=" + start_date + ", end_date=" + end_date + '}';
     }
 }

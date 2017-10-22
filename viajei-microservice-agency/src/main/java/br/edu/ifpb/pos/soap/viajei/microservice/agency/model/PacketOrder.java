@@ -33,7 +33,7 @@ public class PacketOrder implements Serializable {
     @Embedded
     @AttributeOverride(
             name = "id", 
-            column = @Column(name = "client_cpf")
+            column = @Column(name = "client_id")
     )
     private ExternalEntity client;
     

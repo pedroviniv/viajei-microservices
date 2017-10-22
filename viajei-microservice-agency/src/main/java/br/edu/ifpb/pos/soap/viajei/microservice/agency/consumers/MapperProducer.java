@@ -5,6 +5,7 @@
  */
 package br.edu.ifpb.pos.soap.viajei.microservice.agency.consumers;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
@@ -14,6 +15,7 @@ import javax.enterprise.inject.Produces;
  * @author kieckegard
  */
 
+@ApplicationScoped
 public class MapperProducer {
     
     @RequestScoped

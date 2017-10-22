@@ -34,10 +34,10 @@ public class TicketConverter {
         res.setPrice(ticket.getPrice());
         res.setSeat_number(ticket.getSeatNumber());
         
-        String clientCpf = ticket.getClient().getCpf();
+        String clientId = ticket.getClient().getId();
         
-        res.setClient(new ResourceRef(clientCpf, 
-                ClientConsumer.CLIENTS_URI + "/" + clientCpf));
+        res.setClient(new ResourceRef(clientId, 
+                ClientConsumer.CLIENTS_URI + "/" + clientId));
         
         res.setRoute(routeConverter.convert(ticket.getRoute(), 
                 uriInfo));

@@ -18,5 +18,6 @@ public interface Clients {
     void remove(Long id);
     void update(Client updatedClient);
     Client findById(Long id);
+    Client findByCpf(String cpf);
     List<Client> listAll();
 }

@@ -23,7 +23,7 @@ public class TransportResponseResource implements Serializable {
     private String description;
     private Integer seats_qty;
     private BigDecimal base_price;
-    private List<ResourceRef> rooms;
+    private List<ResourceRef> routes;
 
     public TransportResponseResource(Long id, String type, String company_name, 
             String name, String description, Integer seats_qty, BigDecimal base_price) {
@@ -34,11 +34,11 @@ public class TransportResponseResource implements Serializable {
         this.description = description;
         this.seats_qty = seats_qty;
         this.base_price = base_price;
-        this.rooms = new ArrayList<>();
+        this.routes = new ArrayList<>();
     }
 
     public TransportResponseResource() {
-        this.rooms = new ArrayList<>();
+        this.routes = new ArrayList<>();
     }
 
     public Long getId() {
@@ -97,20 +97,20 @@ public class TransportResponseResource implements Serializable {
         this.base_price = base_price;
     }
 
-    public List<ResourceRef> getRooms() {
-        return rooms;
+    public List<ResourceRef> getRoutes() {
+        return routes;
     }
 
-    public void setRooms(List<ResourceRef> rooms) {
-        this.rooms = rooms;
+    public void setRoutes(List<ResourceRef> routes) {
+        this.routes = routes;
     }
     
-    public void addRoom(ResourceRef room) {
-        this.rooms.add(room);
+    public void addRoute(ResourceRef route) {
+        this.routes.add(route);
     }
 
     @Override
     public String toString() {
-        return "TransportResponseResource{" + "id=" + id + ", type=" + type + ", company_name=" + company_name + ", name=" + name + ", description=" + description + ", seats_qty=" + seats_qty + ", rooms=" + rooms + '}';
+        return "TransportResponseResource{" + "id=" + id + ", type=" + type + ", company_name=" + company_name + ", name=" + name + ", description=" + description + ", seats_qty=" + seats_qty + ", routes=" + routes + '}';
     }
 }

@@ -69,7 +69,7 @@ public class JPARepository<T,E> implements Repository<T,E> {
         
         if(!result.isPresent()) {
             String errorMsg = String.format("There's no %s with the id %s", 
-                    entityClass.getName(), id.toString());
+                    entityClass.getSimpleName(), id.toString());
             
             throw new EntityNotFoundException(errorMsg);
         }

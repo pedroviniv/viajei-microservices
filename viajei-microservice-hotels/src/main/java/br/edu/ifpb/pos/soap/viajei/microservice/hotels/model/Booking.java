@@ -7,7 +7,6 @@ package br.edu.ifpb.pos.soap.viajei.microservice.hotels.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

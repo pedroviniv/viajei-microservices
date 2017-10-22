@@ -5,7 +5,6 @@
  */
 package br.edu.ifpb.pos.soap.viajei.microservice.agency.consumers;
 
-import br.edu.ifpb.pos.soap.viajei.microservice.agency.api.converters.ExternalEntityType;
 import br.edu.ifpb.pos.soap.viajei.microservice.agency.infra.EntityNotFoundException;
 import br.edu.ifpb.pos.soap.viajei.microservice.agency.model.ExternalEntity;
 import javax.enterprise.context.RequestScoped;
@@ -25,21 +24,37 @@ import javax.ws.rs.core.Response;
 public class HotelConsumerJerseyImpl implements HotelConsumer {
     
     private Client client = ClientBuilder.newClient();
-    private WebTarget target = client.target(ExternalEntityType.BOOKING
+    private WebTarget target = client.target(ExternalEntities.BOOKING
             .getResourceAddress());
     
     @Inject
     private Mapper mapper;
 
     @Override
-    public ExternalEntity book(String hotelId, String roomId, String clientCpf, 
+    public boolean deleteBooking(String bookingId) {
+        
+        Response deleteResponse = this.target
+                .path(bookingId)
+                .request()
+                .delete();
+        
+        if(deleteResponse.getStatus() == 404)
+            throw new EntityNotFoundException("There's no hotel booking"
+                    + "  with the id "
+                    + bookingId);
+        
+        return deleteResponse.getStatus() == 200;
+    }
+    
+    @Override
+    public ExternalEntity book(String hotelId, String roomId, String clientId, 
             String startDate, String endDate) {
         
         BookingResource booking = new BookingResource();
         
         booking.setHotel_id(Long.valueOf(hotelId));
         booking.setRoom_id(Long.valueOf(roomId));
-        booking.setClient_cpf(clientCpf);
+        booking.setClient_id(clientId);
         booking.setStart_date_time(startDate);
         booking.setEnd_date_time(endDate);
         
@@ -60,7 +75,7 @@ public class HotelConsumerJerseyImpl implements HotelConsumer {
             throw new EntityNotFoundException(errorResponse.getMessage());
         }
         
-        String createdUri = postResponse.getHeaderString("created");
+        String createdUri = postResponse.getHeaderString("location");
         
         
         return new ExternalEntity(getIdFromUri(createdUri));

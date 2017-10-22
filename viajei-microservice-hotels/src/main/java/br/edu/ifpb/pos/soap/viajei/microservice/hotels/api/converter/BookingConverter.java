@@ -46,7 +46,7 @@ public class BookingConverter {
                 LocalDateTime
                         .parse(resource.getEnd_date_time(), dtf));
         
-        Client client = new Client(resource.getClient_cpf());
+        Client client = new Client(resource.getClient_id());
         
         return new Booking(hotel, room, client, period);
     }

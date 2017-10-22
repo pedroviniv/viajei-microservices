@@ -48,7 +48,15 @@ public class PacketsEndPoint {
     @Inject
     private PacketService packetService;
     
+    public static URI getURI(UriInfo uriInfo, Long packetId) {
+        return uriInfo.getBaseUriBuilder()
+                .path(PacketsEndPoint.class)
+                .path(String.valueOf(packetId))
+                .build();
+    }
+    
     @GET
+    @Path("{packetId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(
             @DefaultValue("-1") 

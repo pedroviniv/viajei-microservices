@@ -5,13 +5,11 @@
  */
 package br.edu.ifpb.pos.soap.viajei.microservice.agency.consumers;
 
-import br.edu.ifpb.pos.soap.viajei.microservice.agency.api.converters.ExternalEntityType;
-
 /**
  *
  * @author kieckegard
  */
 public interface ExternalEntityVerifier {
     
-    boolean exists(String entityId, ExternalEntityType type);
+    boolean exists(String entityId, ExternalEntities type);
 }

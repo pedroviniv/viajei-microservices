@@ -5,11 +5,13 @@
  */
 package br.edu.ifpb.pos.soap.viajei.microservice.agency.services;
 
+
 /**
  *
  * @author kieckegard
  */
 public interface PacketOrderService {
     
-    Long order(Long packetId, String clientCpf, Integer seatNumber, String hotelStartDate, String hotelEndDate);
+    Long order(Long packetId, String clientId, Integer seatNumber, String hotelStartDate, String hotelEndDate);
+    void remove(Long packerOrderId);
 }

@@ -20,12 +20,12 @@ import javax.ws.rs.core.Response;
 public class ClientConsumer {
     
     private Client client = ClientBuilder.newClient();
-    public final static String CLIENTS_URI = "http://clients-api/viajei-microservice-clients/api/clients";
+    public final static String CLIENTS_URI = "http://clients-api:8080/viajei-microservice-clients/api/clients";
     private WebTarget target = client.target(CLIENTS_URI);
     
-    public boolean exists(String clientCpf) {
+    public boolean exists(String clientId) {
         
-        Response getResponse = this.target.path(clientCpf)
+        Response getResponse = this.target.path(clientId)
                 .request()
                 .get();
         

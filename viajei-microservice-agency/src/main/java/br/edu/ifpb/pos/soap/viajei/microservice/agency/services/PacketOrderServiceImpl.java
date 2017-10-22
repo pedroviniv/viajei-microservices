@@ -5,7 +5,7 @@
  */
 package br.edu.ifpb.pos.soap.viajei.microservice.agency.services;
 
-import br.edu.ifpb.pos.soap.viajei.microservice.agency.api.converters.ExternalEntityType;
+import br.edu.ifpb.pos.soap.viajei.microservice.agency.consumers.ExternalEntities;
 import br.edu.ifpb.pos.soap.viajei.microservice.agency.consumers.ExternalEntityVerifier;
 import br.edu.ifpb.pos.soap.viajei.microservice.agency.consumers.HotelConsumer;
 import br.edu.ifpb.pos.soap.viajei.microservice.agency.consumers.TicketConsumer;
@@ -42,15 +42,15 @@ public class PacketOrderServiceImpl implements PacketOrderService {
     @Inject HotelConsumer hotelConsumer;
 
     @Override
-    public Long order(Long packetId, String clientCpf, Integer seatNumber, 
+    public Long order(Long packetId, String clientId, Integer seatNumber, 
             String startDate, String endDate) {
         
         Packet packetFound = this.packets.findById(packetId);
         
-        //Verifying if clients cpf exists
-        if(!externalEntityVerifier.exists(clientCpf, ExternalEntityType.CLIENT))
-            throw new EntityNotFoundException("There's no client with the cpf"
-                    + clientCpf);
+        //Verifying if client id exists
+        if(!externalEntityVerifier.exists(clientId, ExternalEntities.CLIENT))
+            throw new EntityNotFoundException("There's no client with the id "
+                    + clientId);
         
         String transportId, routeId;
         
@@ -59,7 +59,7 @@ public class PacketOrderServiceImpl implements PacketOrderService {
                 
         //Creating ticket
         ExternalEntity createdTicket = this.ticketConsumer
-                .createTicket(transportId, routeId, seatNumber, clientCpf);
+                .createTicket(transportId, routeId, seatNumber, clientId);
         
         String hotelId, roomId;
         
@@ -68,15 +68,28 @@ public class PacketOrderServiceImpl implements PacketOrderService {
         
         //Booking the hotel
         ExternalEntity createdBooking = this.hotelConsumer
-                .book(hotelId, roomId, clientCpf, startDate, endDate);
+                .book(hotelId, roomId, clientId, startDate, endDate);
         
-        PacketOrder order = new PacketOrder(new ExternalEntity(clientCpf), 
+        PacketOrder order = new PacketOrder(new ExternalEntity(clientId), 
                 packetFound, 
                 createdBooking, createdTicket);
         
         this.packetOrders.persist(order);
         
         return order.getOrderId();
+    }
+
+    @Override
+    public void remove(Long packerOrderId) {
+        PacketOrder packetOrder = this.packetOrders
+                .findById(packerOrderId);
+        
+        if(ticketConsumer.deleteTicket(packetOrder
+                .getTransportTicket().getId()) &&
+        hotelConsumer.deleteBooking(packetOrder.getHotelBooking().getId())) {
+            
+            packetOrders.remove(packerOrderId);
+        }
     }
     
 }

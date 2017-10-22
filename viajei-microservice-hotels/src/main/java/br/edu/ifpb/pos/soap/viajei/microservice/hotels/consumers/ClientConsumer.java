@@ -23,10 +23,10 @@ public class ClientConsumer {
     private Client client = ClientBuilder.newClient();
     private WebTarget target = client.target(CLIENT_RES);
     
-    public boolean exists(String clientCpf) {
+    public boolean exists(String clientId) {
         
         Response getResponse = this.target
-                .path(clientCpf)
+                .path(clientId)
                 .request()
                 .get();
         

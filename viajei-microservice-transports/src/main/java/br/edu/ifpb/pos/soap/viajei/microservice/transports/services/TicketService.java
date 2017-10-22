@@ -12,5 +12,5 @@ package br.edu.ifpb.pos.soap.viajei.microservice.transports.services;
 public interface TicketService {
     
     Long add(Long transportId, Long routeId, 
-            String clientCpf, Integer seatNumber);
+            String clientId, Integer seatNumber);
 }

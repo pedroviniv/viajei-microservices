@@ -52,10 +52,10 @@ public class BookingResource implements Serializable {
         res.setRoom(new ResourceRef(roomTitle, 
                 RoomEndPoint.getUri(uriInfo, roomId).toString()));
         
-        String clientCpf = booking.getClient().getCpf();
+        String clientId = booking.getClient().getId();
         
-        res.setClient(new ResourceRef(clientCpf,
-                ClientConsumer.CLIENT_RES + "/" + clientCpf));
+        res.setClient(new ResourceRef(clientId,
+                ClientConsumer.CLIENT_RES + "/" + clientId));
         
         res.setId(booking.getId());
         

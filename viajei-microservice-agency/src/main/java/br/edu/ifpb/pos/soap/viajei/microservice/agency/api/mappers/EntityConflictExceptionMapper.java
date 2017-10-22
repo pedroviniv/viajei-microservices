@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ifpb.pos.soap.viajei.microservice.agency.api.response;
+package br.edu.ifpb.pos.soap.viajei.microservice.agency.api.mappers;
 
 import br.edu.ifpb.pos.soap.viajei.microservice.agency.infra.EntityConflictException;
 import javax.ws.rs.core.Response;

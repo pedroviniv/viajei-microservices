@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
@@ -76,6 +77,23 @@ public class ClientsJpaImpl implements Clients {
         return this.manager.createQuery("FROM Client c", 
                 Client.class)
                 .getResultList();
+    }
+
+    @Override
+    public Client findByCpf(String cpf) {
+        try {
+            Client clientFound = this.manager
+                    .createQuery("SELECT c FROM Client c WHERE c.cpf = :cpf", 
+                    Client.class)
+                    .setParameter("cpf", cpf)
+                    .getSingleResult();
+            
+            return clientFound;
+            
+        } catch (NoResultException ex) {
+            throw new EntityNotFoundException("There's no client with the cpf "
+                    + cpf, ex);
+        }
     }
     
 }

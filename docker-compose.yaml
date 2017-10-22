@@ -73,6 +73,12 @@ services:
       - "hotels-api:hotels-api"
       - "transports-api:transports-api"
 
+networks:
+  default:
+    external:
+      name:
+        viajei
+
 volumes:
   clients-postgres-volume-db:
     driver: local

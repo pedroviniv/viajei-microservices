@@ -5,13 +5,16 @@
  */
 package br.edu.ifpb.pos.soap.viajei.microservice.agency.api;
 
+import br.edu.ifpb.pos.soap.viajei.microservice.agency.api.converters.PacketOrderConverter;
 import br.edu.ifpb.pos.soap.viajei.microservice.agency.api.resources.PacketOrderRequestResource;
+import br.edu.ifpb.pos.soap.viajei.microservice.agency.api.resources.PacketOrderResponseResource;
 import br.edu.ifpb.pos.soap.viajei.microservice.agency.infra.PacketOrdersJPA;
 import br.edu.ifpb.pos.soap.viajei.microservice.agency.infra.Repository;
 import br.edu.ifpb.pos.soap.viajei.microservice.agency.model.PacketOrder;
 import br.edu.ifpb.pos.soap.viajei.microservice.agency.services.PacketOrderService;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -44,28 +47,40 @@ public class PacketOrdersEndPoint {
     @Inject
     private Repository<PacketOrder, Long> packetOrders;
     
+    @Inject private PacketOrderConverter packetOrderConverter;
+    
     @GET
     @Path("{packetOrderId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findById(
             @DefaultValue("-1") 
             @PathParam("packetOrderId") 
-                    Long packetOrderId) {
+                    Long packetOrderId,
+            @Context UriInfo uriInfo) {
         
         PacketOrder packetOrderFound = this.packetOrders
                 .findById(packetOrderId);
         
-        return Response.ok(packetOrderFound).build();
+        PacketOrderResponseResource packetOrderResponseResource = 
+                packetOrderConverter.convert(packetOrderFound, uriInfo);
+        
+        return Response.ok(packetOrderResponseResource).build();
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listAll() {
+    public Response listAll(@Context UriInfo uriInfo) {
         
         List<PacketOrder> packetOrderList = this.packetOrders.listAll();
         
-        GenericEntity<List<PacketOrder>> entity = 
-                new GenericEntity<List<PacketOrder>>(packetOrderList){};
+        List<PacketOrderResponseResource> packetOrderResponseList = 
+                packetOrderList.stream()
+                .map(p -> packetOrderConverter.convert(p, uriInfo))
+                .collect(Collectors.toList());
+        
+        GenericEntity<List<PacketOrderResponseResource>> entity = 
+                new GenericEntity<List<PacketOrderResponseResource>>
+                    (packetOrderResponseList){};
         
         return Response.ok(entity).build();
     }
@@ -75,7 +90,7 @@ public class PacketOrdersEndPoint {
     public Response order(PacketOrderRequestResource req, @Context UriInfo uriInfo) {
         
         Long packetOrderId = this.packetOrderService.order(req.getPacket_id(), 
-                req.getClient_cpf(), req.getSeat_number(), 
+                req.getClient_id(), req.getSeat_number(), 
                 req.getStart_date(), req.getEnd_date());
         
         URI createdUri = uriInfo.getBaseUriBuilder()
@@ -93,7 +108,7 @@ public class PacketOrdersEndPoint {
             @PathParam("packetOrderId") 
                     Long packetOrderId) {
         
-        this.packetOrders.remove(packetOrderId);
+        this.packetOrderService.remove(packetOrderId);
         
         return Response.ok().build();
     }

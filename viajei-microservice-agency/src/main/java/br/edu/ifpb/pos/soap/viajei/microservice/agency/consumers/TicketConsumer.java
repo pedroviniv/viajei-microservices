@@ -14,7 +14,8 @@ import br.edu.ifpb.pos.soap.viajei.microservice.agency.model.ExternalEntity;
  */
 public interface TicketConsumer {
     
+    boolean deleteTicket(String ticketId);
     ExternalEntity createTicket(String transportId, String routeId, 
-            Integer seatNumber, String clientCpf);
+            Integer seatNumber, String clientId);
     
 }

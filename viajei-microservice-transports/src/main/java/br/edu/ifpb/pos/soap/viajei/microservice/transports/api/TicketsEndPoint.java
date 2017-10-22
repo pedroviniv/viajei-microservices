@@ -87,7 +87,7 @@ public class TicketsEndPoint {
     public Response add(TicketRequestResource req, @Context UriInfo uriInfo) {
         
         Long ticketId = this.ticketService.add(req.getTransport_id(), 
-                req.getRoute_id(), req.getClient_cpf(), 
+                req.getRoute_id(), req.getClient_id(), 
                 req.getSeat_number());
         
         URI createdUri = uriInfo.getBaseUriBuilder()

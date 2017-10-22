@@ -13,13 +13,13 @@ public class TicketResource {
     
     private Long transport_id;
     private Long route_id;
-    private String client_cpf;
+    private String client_id;
     private Integer seat_number;
 
-    public TicketResource(Long transport_id, Long route_id, String client_cpf, Integer seat_number) {
+    public TicketResource(Long transport_id, Long route_id, String client_id, Integer seat_number) {
         this.transport_id = transport_id;
         this.route_id = route_id;
-        this.client_cpf = client_cpf;
+        this.client_id = client_id;
         this.seat_number = seat_number;
     }
 
@@ -42,12 +42,12 @@ public class TicketResource {
         this.route_id = route_id;
     }
 
-    public String getClient_cpf() {
-        return client_cpf;
+    public String getClient_id() {
+        return client_id;
     }
 
-    public void setClient_cpf(String client_cpf) {
-        this.client_cpf = client_cpf;
+    public void setClient_id(String client_id) {
+        this.client_id = client_id;
     }
 
     public Integer getSeat_number() {
@@ -60,6 +60,6 @@ public class TicketResource {
 
     @Override
     public String toString() {
-        return "TransportTicketResource{" + "transport_id=" + transport_id + ", route_id=" + route_id + ", client_cpf=" + client_cpf + ", seat_number=" + seat_number + '}';
+        return "TransportTicketResource{" + "transport_id=" + transport_id + ", route_id=" + route_id + ", client_id=" + client_id + ", seat_number=" + seat_number + '}';
     }
 }

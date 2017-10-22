@@ -6,6 +6,7 @@
 package br.edu.ifpb.pos.soap.viajei.microservice.hotels.model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
@@ -16,25 +17,26 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Client implements Serializable {
     
-    private String cpf;
+    @Column(name = "client_id")
+    private String id;
 
-    public Client(String cpf) {
-        this.cpf = cpf;
+    public Client(String id) {
+        this.id = id;
     }
 
     public Client() {
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getId() {
+        return id;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
     public String toString() {
-        return "Client{" + "cpf=" + cpf + '}';
+        return "Client{" + "id=" + id + '}';
     }
 }

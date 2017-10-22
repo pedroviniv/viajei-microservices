@@ -89,11 +89,11 @@ public class BookingEndPoint {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response add(BookingRequestResource bookingResource, @Context UriInfo uriInfo) {
         
-        String clientCpf = bookingResource.getClient_cpf();
+        String clientId = bookingResource.getClient_id();
         
-        if(!clientConsumer.exists(clientCpf))
-            throw new EntityNotFoundException("There's no client with cpf "
-                    + clientCpf);
+        if(!clientConsumer.exists(clientId))
+            throw new EntityNotFoundException("There's no client with id "
+                    + clientId);
         
         Booking booking = this.bookingConverter
                 .convert(bookingResource);

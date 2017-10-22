@@ -5,7 +5,6 @@
  */
 package br.edu.ifpb.pos.soap.viajei.microservice.agency.consumers;
 
-import br.edu.ifpb.pos.soap.viajei.microservice.agency.api.converters.ExternalEntityType;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -23,7 +22,7 @@ public class ExternalEntityVerifierJerseyImpl implements ExternalEntityVerifier 
     private Client client = ClientBuilder.newClient();
    
     @Override
-    public boolean exists(String entityId, ExternalEntityType type) {
+    public boolean exists(String entityId, ExternalEntities type) {
         
         WebTarget target = this.client.target(type.getResourceAddress());
         

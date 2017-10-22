@@ -13,6 +13,7 @@ import br.edu.ifpb.pos.soap.viajei.microservice.agency.model.ExternalEntity;
  */
 public interface HotelConsumer {
     
-    ExternalEntity book(String hotelId, String roomId, String clientCpf, 
+    boolean deleteBooking(String bookingId);
+    ExternalEntity book(String hotelId, String roomId, String clientId, 
             String startDate, String endDate);
 }

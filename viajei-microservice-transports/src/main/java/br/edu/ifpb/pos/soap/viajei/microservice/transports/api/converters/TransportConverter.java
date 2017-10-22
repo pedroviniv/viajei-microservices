@@ -43,7 +43,7 @@ public class TransportConverter {
                 .map(r -> routeConverter.convert(r, uriInfo))
                 .collect(Collectors.toList());
         
-        res.setRooms(rooms);
+        res.setRoutes(rooms);
         return res;
     }
 }
