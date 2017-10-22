@@ -11,17 +11,17 @@ import java.io.Serializable;
  *
  * @author kieckegard
  */
-public class LinkResource implements Serializable {
+public class ResourceRef implements Serializable {
     
     private String rel;
     private String href;
 
-    public LinkResource(String rel, String href) {
+    public ResourceRef(String rel, String href) {
         this.rel = rel;
         this.href = href;
     }
 
-    public LinkResource() {
+    public ResourceRef() {
     }
 
     public String getRel() {

@@ -5,7 +5,7 @@
  */
 package br.edu.ifpb.pos.soap.viajei.microservice.agency.api.converters;
 
-import br.edu.ifpb.pos.soap.viajei.microservice.agency.api.resources.LinkResource;
+import br.edu.ifpb.pos.soap.viajei.microservice.agency.api.resources.ResourceRef;
 import br.edu.ifpb.pos.soap.viajei.microservice.agency.api.resources.PacketResource;
 import br.edu.ifpb.pos.soap.viajei.microservice.agency.model.Packet;
 import javax.enterprise.context.ApplicationScoped;
@@ -25,17 +25,17 @@ public class PacketConverter {
         
         PacketResource packetResource = new PacketResource();
         
-        LinkResource hotelRes = externalEntityConverter.
+        ResourceRef hotelRes = externalEntityConverter.
                 convert(packet.getRoom(), 
                         ExternalEntityType.HOTEL);
         
-        LinkResource roomRes = externalEntityConverter
+        ResourceRef roomRes = externalEntityConverter
                 .convert(packet.getRoom(), ExternalEntityType.ROOM);
         
-        LinkResource transportRes = externalEntityConverter
+        ResourceRef transportRes = externalEntityConverter
                 .convert(packet.getTransport(), ExternalEntityType.TRANSPORT);
         
-        LinkResource routeRes = externalEntityConverter
+        ResourceRef routeRes = externalEntityConverter
                 .convert(packet.getRoute(), ExternalEntityType.ROUTE);
         
         return new PacketResource(

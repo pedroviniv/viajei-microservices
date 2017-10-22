@@ -15,12 +15,12 @@ import java.io.Serializable;
 public class PacketResource implements Serializable {
     
    private Long id;
-   private LinkResource hotel;
-   private LinkResource room;
-   private LinkResource transport;
-   private LinkResource route;
+   private ResourceRef hotel;
+   private ResourceRef room;
+   private ResourceRef transport;
+   private ResourceRef route;
 
-    public PacketResource(Long id, LinkResource hotel, LinkResource room, LinkResource transport, LinkResource route) {
+    public PacketResource(Long id, ResourceRef hotel, ResourceRef room, ResourceRef transport, ResourceRef route) {
         this.id = id;
         this.hotel = hotel;
         this.room = room;
@@ -39,35 +39,35 @@ public class PacketResource implements Serializable {
         this.id = id;
     }
 
-    public LinkResource getHotel() {
+    public ResourceRef getHotel() {
         return hotel;
     }
 
-    public void setHotel(LinkResource hotel) {
+    public void setHotel(ResourceRef hotel) {
         this.hotel = hotel;
     }
 
-    public LinkResource getRoom() {
+    public ResourceRef getRoom() {
         return room;
     }
 
-    public void setRoom(LinkResource room) {
+    public void setRoom(ResourceRef room) {
         this.room = room;
     }
 
-    public LinkResource getTransport() {
+    public ResourceRef getTransport() {
         return transport;
     }
 
-    public void setTransport(LinkResource transport) {
+    public void setTransport(ResourceRef transport) {
         this.transport = transport;
     }
 
-    public LinkResource getRoute() {
+    public ResourceRef getRoute() {
         return route;
     }
 
-    public void setRoute(LinkResource route) {
+    public void setRoute(ResourceRef route) {
         this.route = route;
     }
 

@@ -5,7 +5,7 @@
  */
 package br.edu.ifpb.pos.soap.viajei.microservice.agency.api.converters;
 
-import br.edu.ifpb.pos.soap.viajei.microservice.agency.api.resources.LinkResource;
+import br.edu.ifpb.pos.soap.viajei.microservice.agency.api.resources.ResourceRef;
 import br.edu.ifpb.pos.soap.viajei.microservice.agency.model.ExternalEntity;
 import javax.enterprise.context.ApplicationScoped;
 
@@ -17,9 +17,9 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class ExternalEntityConverter {
     
-    public LinkResource convert(ExternalEntity externalEntity, ExternalEntityType type) {
+    public ResourceRef convert(ExternalEntity externalEntity, ExternalEntityType type) {
 
         String href = type.getResourceAddress() + "/";
-        return new LinkResource(externalEntity.getId(), href + externalEntity.getId());
+        return new ResourceRef(externalEntity.getId(), href + externalEntity.getId());
     }
 }
