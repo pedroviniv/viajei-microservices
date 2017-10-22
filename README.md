@@ -11,6 +11,6 @@ In order to deploy this project, follow the steps bellow:
 - run the command `git clone https://github.com/pedroviniv/viajei-microservices.git` to clone this repository to your machine
 - navigate to the project root folder and run the command `sh start.sh`
 	- the command above will execute the following steps:
-		- mvn clean install (to compile the source code generating the war file and to install the artifact generated to the maven dependencies folder)
-		- sudo docker-compose up -d to run the build the images and instantiate the containers described into docker-compose.yaml file
+		- `mvn clean install` (to compile the source code generating the war file and to install the artifact generated to the maven dependencies folder)
+		- `sudo docker-compose up -d` to build the images and instantiate the containers described into docker-compose.yaml file
 - finally, run the command `sudo docker container ls` and if the steps above went fine, you will see all the deployed containers
